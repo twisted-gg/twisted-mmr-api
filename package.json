@@ -1,0 +1,19 @@
+{
+  "name": "twisted-mmr-api",
+  "version": "1.0.0",
+  "description": "Calculate mmr based on user current leagues",
+  "main": "index.js",
+  "scripts": {
+    "start": "node src",
+    "lint": "standard"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "standard": "^14.3.1"
+  },
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
