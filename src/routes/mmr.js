@@ -12,7 +12,7 @@ router.get('/mmr-to-league', (req, res) => {
   res.json(response)
 })
 
-router.get('/leage-to-mmr', (req, res) => {
+router.get('/league-to-mmr', (req, res) => {
   const { rank, tier, points } = req.query
   const response = service.leagueToMmr(rank, tier, +points)
   res.json(response)
