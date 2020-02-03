@@ -5,25 +5,25 @@ describe('Mmr service', () => {
   describe('Mmr to league', () => {
     it('should return IRON IV (last league)', () => {
       expect(service.mmrToLeague(0)).toEqual({
-        rank: 'IRON',
-        tier: 'IV',
+        tier: 'IRON',
+        rank: 'IV',
         points: 0
       })      
     })
     it('should return IRON IV with 99 points(last league)', () => {
       expect(service.mmrToLeague(99)).toEqual({
-        rank: 'IRON',
-        tier: 'IV',
+        tier: 'IRON',
+        rank: 'IV',
         points: 99
       })      
     })
     it('should return challenger', () => {
-      expect(service.mmrToLeague(5000).rank).toEqual('CHALLENGER')      
+      expect(service.mmrToLeague(5000).tier).toEqual('CHALLENGER')      
     })
     it('should return BEONZE (last league)', () => {
       expect(service.mmrToLeague(400)).toEqual({
-        rank: 'BRONZE',
-        tier: 'IV',
+        tier: 'BRONZE',
+        rank: 'IV',
         points: 0
       })      
     })
@@ -43,11 +43,11 @@ describe('Mmr service', () => {
   describe('Combine league <=> mmr', () => {
     it('should return the same first league', () => {
       const data = {
-        rank: 'GOLD',
-        tier: 'I',
+        tier: 'GOLD',
+        rank: 'I',
         points: 99
       }
-      const { mmr } = service.leagueToMmr(data.rank, data.tier, data.points)
+      const { mmr } = service.leagueToMmr(data.tier, data.rank, data.points)
       const league = service.mmrToLeague(mmr)
       expect(league).toEqual(data)
     })

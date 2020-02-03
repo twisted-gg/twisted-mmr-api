@@ -1,16 +1,16 @@
 // Base
-const pointsPerTier = 100
+const pointsPerRank = 100
 const tiersPerRank = 4
-const pointsPerRank = pointsPerTier * tiersPerRank
+const pointsPerTier = pointsPerRank * tiersPerRank
 
-const tiers = [
+const ranks = [
   'IV',
   'III',
   'II',
   'I'
 ]
 
-const ranks = [
+const tiers = [
   'IRON',
   'BRONZE',
   'SILVER',
@@ -33,26 +33,26 @@ function mmrToLeague (mmr) {
   }
 
   // Calc
-  const rankIndex = parseInt(mmr / pointsPerRank)
-  const tierPoints = mmr - (rankIndex * pointsPerRank)
-  let tierIndex = parseInt(tierPoints / pointsPerTier)
-  let points = tierPoints % pointsPerTier
+  const rankIndex = parseInt(mmr / pointsPerTier)
+  const tierPoints = mmr - (rankIndex * pointsPerTier)
+  let tierIndex = parseInt(tierPoints / pointsPerRank)
+  let points = tierPoints % pointsPerRank
 
   // Response
-  let rank = rankIndex >= ranks.length ? ranks[ranks.length - 1] : ranks[rankIndex]
-  let tier = tiers[tierIndex]
+  let tier = rankIndex >= tiers.length ? tiers[tiers.length - 1] : tiers[rankIndex]
+  let rank = ranks[tierIndex]
 
-  if (rankIndex >= ranks.length) {
-    rank = ranks[ranks.length - 1]
-    tierIndex += (rankIndex - (ranks.length - 1)) * tiersPerRank
+  if (rankIndex >= tiers.length) {
+    tier = tiers[tiers.length - 1]
+    tierIndex += (rankIndex - (tiers.length - 1)) * tiersPerRank
   }
 
-  if (typeof rank === 'object') {
-    if (!rank.tiers) {
-      tier = null
-      points += tierIndex * pointsPerTier
+  if (typeof tier === 'object') {
+    if (!tier.tiers) {
+      rank = null
+      points += tierIndex * pointsPerRank
     }
-    rank = rank.name
+    tier = tier.name
   }
 
   return {
@@ -62,8 +62,8 @@ function mmrToLeague (mmr) {
   }
 }
 
-function leagueToMmr (rank, tier, points) {
-  if (!rank || !tiers || typeof points !== 'number') {
+function leagueToMmr (tier, rank, points) {
+  if (!rank || !ranks || typeof points !== 'number') {
     return {
       mmr: -1
     }
