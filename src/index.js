@@ -4,4 +4,6 @@ const mmrRoutes = require('./routes/mmr')
 
 app.use(mmrRoutes)
 
-app.listen(3000)
+app.listen(3000, () => {
+  console.log('Service running')
+})

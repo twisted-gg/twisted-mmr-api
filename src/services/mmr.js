@@ -63,6 +63,11 @@ function mmrToLeague (mmr) {
 }
 
 function leagueToMmr (rank, tier, points) {
+  if (!rank || !tiers || typeof points !== 'number') {
+    return {
+      mmr: -1
+    }
+  }
   const rankIndex = ranks.findIndex(r => r === rank)
   const tierIndex = tiers.findIndex(t => t === tier)
 
