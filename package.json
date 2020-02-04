@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node src",
     "lint": "standard",
-    "test": "jest"
+    "test": "jest",
+    "test:coverage": "jest --coverage"
   },
   "keywords": [],
   "author": "",

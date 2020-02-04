@@ -3,6 +3,15 @@ const service = require('./mmr')
 describe('Mmr service', () => {
   // MMR to league test
   describe('Mmr to league', () => {
+    it('should return unranked when mmr is null/undefined or less than 0', () => {
+      const response = {
+        tier: 'UNRANKED',
+        rank: null,
+        points: null
+      }
+      expect(service.mmrToLeague()).toEqual(response)   
+      expect(service.mmrToLeague(-1)).toEqual(response)      
+    })
     it('should return IRON IV (last league)', () => {
       expect(service.mmrToLeague(0)).toEqual({
         tier: 'IRON',
@@ -41,15 +50,51 @@ describe('Mmr service', () => {
     })
   })
   describe('Combine league <=> mmr', () => {
-    it('should return the same first league', () => {
+    function sameTier (tier, rank, points) {
       const data = {
-        tier: 'GOLD',
-        rank: 'I',
-        points: 99
+        tier,
+        rank,
+        points
       }
       const { mmr } = service.leagueToMmr(data.tier, data.rank, data.points)
-      const league = service.mmrToLeague(mmr)
-      expect(league).toEqual(data)
+      return service.mmrToLeague(mmr)
+    }
+    it('should return the same first league (low elo)', () => {
+      const tiers = [
+        'IRON',
+        'BRONZE',
+        'SILVER',
+        'GOLD',
+        'PLATINUM',
+        'DIAMOND'
+      ]
+      const rank = 'I'
+      const points = 99
+      for (const tier of tiers) {
+        const data = {
+          tier,
+          rank,
+          points
+        }
+        expect(sameTier(tier, rank, points)).toEqual(data)
+      }
+    })
+    it('should return the same first league (high elo)', () => {
+      const tiers = [
+        'MASTER',
+        'GRANDMASTER',
+        'CHALLENGER'
+      ]
+      const rank = null
+      const points = 99
+      for (const tier of tiers) {
+        const data = {
+          tier,
+          rank,
+          points
+        }
+        expect(sameTier(tier, rank, points)).toEqual(data)
+      }
     })
   })
 })

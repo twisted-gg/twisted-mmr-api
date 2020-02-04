@@ -11,23 +11,23 @@ const ranks = [
 ]
 
 const tiers = [
-  'IRON',
-  'BRONZE',
-  'SILVER',
-  'GOLD',
-  'PLATINUM',
-  'DIAMOND',
-  { name: 'MASTER', tiers: false },
-  { name: 'GRANDMASTER', tiers: false },
-  { name: 'CHALLENGER', tiers: false }
+  { name: 'IRON', ranks: true },
+  { name: 'BRONZE', ranks: true },
+  { name: 'SILVER', ranks: true },
+  { name: 'GOLD', ranks: true },
+  { name: 'PLATINUM', ranks: true },
+  { name: 'DIAMOND', ranks: true },
+  { name: 'MASTER', ranks: false },
+  { name: 'GRANDMASTER', ranks: false },
+  { name: 'CHALLENGER', ranks: false }
 ]
 
 // Algorithms
 function mmrToLeague (mmr) {
   if (typeof mmr !== 'number' || mmr < 0) {
     return {
-      rank: 'UNRANKED',
-      tier: null,
+      tier: 'UNRANKED',
+      rank: null,
       points: null
     }
   }
@@ -47,13 +47,11 @@ function mmrToLeague (mmr) {
     tierIndex += (rankIndex - (tiers.length - 1)) * tiersPerRank
   }
 
-  if (typeof tier === 'object') {
-    if (!tier.tiers) {
-      rank = null
-      points += tierIndex * pointsPerRank
-    }
-    tier = tier.name
+  if (!tier.ranks) {
+    rank = null
+    points += tierIndex * pointsPerRank
   }
+  tier = tier.name
 
   return {
     rank,
@@ -63,14 +61,18 @@ function mmrToLeague (mmr) {
 }
 
 function leagueToMmr (tier, rank, points) {
-  if (!rank || !ranks || typeof points !== 'number') {
+  if (!tier || typeof points !== 'number') {
     return {
       mmr: -1
     }
   }
-  const rankIndex = ranks.findIndex(r => r === rank)
-  const tierIndex = tiers.findIndex(t => t === tier)
-
+  const tierIndex = tiers.findIndex(t => t.name === tier)
+  let rankIndex
+  if (!rank) {
+    rankIndex = 0
+  } else {
+    rankIndex = ranks.findIndex(r => r === rank)
+  }
   const mmr = (rankIndex * pointsPerRank) + (tierIndex * pointsPerTier) + points
   return {
     mmr
